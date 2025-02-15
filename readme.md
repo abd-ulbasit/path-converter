@@ -18,6 +18,16 @@ git clone https://github.com/abd-ulbasit/path-converter
 cd path-converter
 ```
 
+## Running Tests
+
+To run the tests, navigate to the project directory and execute:
+
+```bash
+go test ./pathutils -run TestConvertToAbsolutePath -v
+```
+
+This will run all test cases and show detailed output for each test.
+
 ## Usage
 
 ```go
@@ -30,15 +40,7 @@ absolutePath := pathutils.ConvertToAbsolutePath(currentDir, relativePath)
 // Result: "/home/myhome/myfolder2/mydocument.txt"
 ```
 
-## Running Tests
 
-To run the tests, navigate to the project directory and execute:
-
-```bash
-go test ./pathutils -run TestConvertToAbsolutePath -v
-```
-
-This will run all test cases and show detailed output for each test.
 
 ## Project Structure
 
