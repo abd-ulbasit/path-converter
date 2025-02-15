@@ -35,7 +35,7 @@ absolutePath := pathutils.ConvertToAbsolutePath(currentDir, relativePath)
 To run the tests, navigate to the project directory and execute:
 
 ```bash
-go test ./pathutils -v
+go test ./pathutils -run TestConvertToAbsolutePath -v
 ```
 
 This will run all test cases and show detailed output for each test.

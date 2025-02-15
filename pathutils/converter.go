@@ -21,35 +21,36 @@ func ConvertToAbsolutePath(currentDir, relativePath string) string {
 	dirParts := strings.Split(currentDir, "/")
 	pathParts := strings.Split(relativePath, "/")
 
-	// Remove empty parts
-	dirParts = removeEmptyParts(dirParts)
+	// Initialize stack with approximate capacity
+	stack := NewStack(len(dirParts) + len(pathParts))
 
-	// Initialize result stack
-	result := make([]string, 0, len(dirParts))
-	result = append(result, dirParts...)
+	// Add directory parts to stack
+	for _, part := range dirParts {
+		if part != "" {
+			stack.Push(part)
+		}
+	}
 
 	// Process each part of the relative path
 	for _, part := range pathParts {
 		switch part {
-		case "":
-			continue
-		case ".":
+		case "", ".":
 			continue
 		case "..":
-			if len(result) > 0 {
-				result = result[:len(result)-1]
+			if !stack.IsEmpty() {
+				stack.Pop()
 			}
 		default:
-			result = append(result, part)
+			stack.Push(part)
 		}
 	}
 
 	// Construct final path
-	if len(result) == 0 {
+	if stack.IsEmpty() {
 		return "/"
 	}
 
-	return "/" + strings.Join(result, "/")
+	return "/" + strings.Join(stack.ToSlice(), "/")
 }
 
 // normalizeSlashes removes redundant slashes and handles edge cases
@@ -59,15 +60,4 @@ func normalizeSlashes(path string) string {
 		path = strings.ReplaceAll(path, "//", "/")
 	}
 	return path
-}
-
-// removeEmptyParts removes empty strings from the path parts
-func removeEmptyParts(parts []string) []string {
-	result := make([]string, 0, len(parts))
-	for _, part := range parts {
-		if part != "" {
-			result = append(result, part)
-		}
-	}
-	return result
 }
